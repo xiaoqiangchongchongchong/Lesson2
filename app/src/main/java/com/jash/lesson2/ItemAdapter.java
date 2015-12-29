@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 public class ItemAdapter extends BaseAdapter {
     private static final String TAG = ItemAdapter.class.getSimpleName();
     private Context context;
-    private List<Item> list;
+    private List<Response.ItemsEntity> list;
 
     public ItemAdapter(Context context) {
         this.context = context;
@@ -53,12 +53,12 @@ public class ItemAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item, parent, false);
             convertView.setTag(new ViewHolder(convertView));
         }
-        Item item = list.get(position);
+        Response.ItemsEntity item = list.get(position);
         ViewHolder holder = (ViewHolder) convertView.getTag();
-        if (item.getUserName() != null) {
-            holder.name.setText(item.getUserName());
+        if (item.getUser() != null) {
+            holder.name.setText(item.getUser().getLogin());
 
-            Picasso.with(context).load(getIconURL(item.getUserId(), item.getUserIcon()))
+            Picasso.with(context).load(getIconURL(item.getUser().getId(), item.getUser().getIcon()))
                     .transform(new CircleTransformation())
                     .into(holder.icon);
         } else {
@@ -92,7 +92,7 @@ public class ItemAdapter extends BaseAdapter {
         return String.format(url, id / 10000, id, icon);
 
     }
-    public void addAll(Collection<? extends Item> collection){
+    public void addAll(Collection<? extends Response.ItemsEntity> collection){
         list.addAll(collection);
         notifyDataSetChanged();
     }
